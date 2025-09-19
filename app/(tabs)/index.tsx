@@ -1,6 +1,8 @@
 import React, { useContext, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 import { ThemeContext } from '@/context/ThemeContext';
 import { LanguageContext } from '@/context/LanguageContext';
 import { AccessibilityContext } from '@/context/AccessibilityContext';
@@ -8,10 +10,9 @@ import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { fetchHealthReports, fetchOutbreaks } from '@/store/slices/healthDataSlice';
 import { fetchAlerts } from '@/store/slices/alertsSlice';
 
-const { width } = Dimensions.get('window');
-
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { user } = useAppSelector(state => state.auth);
   const { reports, outbreaks } = useAppSelector(state => state.healthData);
   const { alerts } = useAppSelector(state => state.alerts);
@@ -160,6 +161,10 @@ export default function HomeScreen() {
         
         <TouchableOpacity
           style={[styles.profileButton, { backgroundColor: theme.primary }]}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            router.push('/(tabs)/settings');
+          }}
           accessible={true}
           accessibilityLabel="Profile"
         >
@@ -241,7 +246,10 @@ export default function HomeScreen() {
             subtitle={t('home.reportSymptoms')}
             icon="add-circle"
             color={theme.primary}
-            onPress={() => {}}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push('/(tabs)/report');
+            }}
           />
           
           <QuickActionCard
@@ -249,7 +257,10 @@ export default function HomeScreen() {
             subtitle={t('home.viewAlerts')}
             icon="notifications"
             color={theme.warning}
-            onPress={() => {}}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push('/(tabs)/alerts');
+            }}
           />
           
           {user?.role === 'asha_worker' && (
@@ -258,7 +269,10 @@ export default function HomeScreen() {
               subtitle={t('home.collectData')}
               icon="clipboard"
               color={theme.success}
-              onPress={() => {}}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push('/(tabs)/fielddata');
+              }}
             />
           )}
           
@@ -268,7 +282,10 @@ export default function HomeScreen() {
               subtitle={t('home.viewAnalytics')}
               icon="bar-chart"
               color={theme.accent}
-              onPress={() => {}}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push('/(tabs)/dashboard');
+              }}
             />
           )}
         </View>
