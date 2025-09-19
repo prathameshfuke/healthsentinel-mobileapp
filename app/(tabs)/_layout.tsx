@@ -79,6 +79,19 @@ export default function TabLayout() {
         }}
       />
 
+      {/* Water Quality tab - available to ASHA workers and Health Officials */}
+      {(user.role === 'asha_worker' || user.role === 'health_official') && (
+        <Tabs.Screen
+          name="water-quality"
+          options={{
+            title: 'Water Quality',
+            tabBarIcon: ({ size, color }) => (
+              <Ionicons name="water" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
+
       {/* Settings tab - available to all users */}
       <Tabs.Screen
         name="settings"

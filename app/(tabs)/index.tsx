@@ -264,29 +264,55 @@ export default function HomeScreen() {
           />
           
           {user?.role === 'asha_worker' && (
-            <QuickActionCard
-              title={t('home.fieldData')}
-              subtitle={t('home.collectData')}
-              icon="clipboard"
-              color={theme.success}
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                router.push('/(tabs)/fielddata');
-              }}
-            />
+            <>
+              <QuickActionCard
+                title={t('home.fieldData')}
+                subtitle={t('home.collectData')}
+                icon="clipboard"
+                color={theme.success}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/(tabs)/fielddata');
+                }}
+              />
+              
+              <QuickActionCard
+                title="Water Quality"
+                subtitle="Monitor water safety"
+                icon="water"
+                color="#06B6D4"
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/(tabs)/water-quality');
+                }}
+              />
+            </>
           )}
           
           {user?.role === 'health_official' && (
-            <QuickActionCard
-              title={t('home.dashboard')}
-              subtitle={t('home.viewAnalytics')}
-              icon="bar-chart"
-              color={theme.accent}
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                router.push('/(tabs)/dashboard');
-              }}
-            />
+            <>
+              <QuickActionCard
+                title={t('home.dashboard')}
+                subtitle={t('home.viewAnalytics')}
+                icon="bar-chart"
+                color={theme.accent}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/(tabs)/dashboard');
+                }}
+              />
+              
+              <QuickActionCard
+                title="Water Quality"
+                subtitle="Environmental monitoring"
+                icon="water"
+                color="#06B6D4"
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push('/(tabs)/water-quality');
+                }}
+              />
+            </>
           )}
         </View>
       </View>

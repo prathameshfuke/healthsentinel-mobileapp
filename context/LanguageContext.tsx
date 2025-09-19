@@ -170,6 +170,27 @@ const translations = {
     'fieldData.subtitle': 'Collect and manage field health data',
     'fieldData.collectData': 'Collect Data',
     'fieldData.history': 'History',
+    
+    // Voice Input
+    'voice.startRecording': 'Start voice recording',
+    'voice.stopRecording': 'Stop voice recording',
+    'voice.speakNow': 'Speak now...',
+    'voice.speakFieldValue': 'Speak the {{field}} value',
+    'voice.processing': 'Processing voice input...',
+    'voice.transcriptionReady': 'Voice transcription ready',
+    
+    // Water Quality
+    'water.title': 'Water Quality',
+    'water.subtitle': 'Monitor water safety and quality',
+    'water.sourceType': 'Water Source Type',
+    'water.parameters': 'Quality Parameters',
+    'water.documentation': 'Documentation',
+    'water.assessment': 'Quality Assessment',
+    'water.excellent': 'Excellent',
+    'water.good': 'Good',
+    'water.fair': 'Fair',
+    'water.poor': 'Poor',
+    'water.unsafe': 'Unsafe',
   },
   hi: {
     // Common
