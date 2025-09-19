@@ -308,6 +308,45 @@ export default function ReportScreen() {
         />
       </View>
 
+      {/* Water Quality Issues (for Community Members) */}
+      {user?.role === 'villager' && (
+        <View style={styles.section}>
+          <Text 
+            style={[
+              styles.sectionTitle, 
+              { 
+                color: theme.text,
+                fontSize: accessibility.largeText ? 20 : 18,
+              }
+            ]}
+          >
+            Water Quality Issues
+          </Text>
+          
+          <TouchableOpacity
+            style={[
+              styles.waterQualityButton,
+              { 
+                backgroundColor: theme.surface,
+                borderColor: theme.border,
+              }
+            ]}
+            onPress={() => router.push('/(tabs)/water-quality')}
+          >
+            <Ionicons name="water" size={24} color="#06B6D4" />
+            <View style={styles.waterQualityContent}>
+              <Text style={[styles.waterQualityTitle, { color: theme.text }]}>
+                Report Water Problem
+              </Text>
+              <Text style={[styles.waterQualitySubtitle, { color: theme.textSecondary }]}>
+                Report dirty water, bad taste, or contamination
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color={theme.textSecondary} />
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* Submit Button */}
       <TouchableOpacity
         style={[
@@ -429,5 +468,25 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  waterQualityButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  waterQualityContent: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  waterQualityTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  waterQualitySubtitle: {
+    fontSize: 14,
+    lineHeight: 18,
   },
 });

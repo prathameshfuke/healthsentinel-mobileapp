@@ -9,11 +9,12 @@ import healthDataSlice from './slices/healthDataSlice';
 import alertsSlice from './slices/alertsSlice';
 import settingsSlice from './slices/settingsSlice';
 import offlineSlice from './slices/offlineSlice';
+import waterQualitySlice from './slices/waterQualitySlice';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'settings', 'offline'], // Only persist these slices
+  whitelist: ['auth', 'settings', 'offline', 'waterQuality'], // Only persist these slices
   blacklist: ['healthData', 'alerts'], // Don't persist real-time data
 };
 
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   alerts: alertsSlice,
   settings: settingsSlice,
   offline: offlineSlice,
+  waterQuality: waterQualitySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
