@@ -3,6 +3,9 @@
 dist/
 web-build/
 
+# Bolt.new (development tool)
+.bolt/
+
 # Native
 *.orig.*
 *.jks
