@@ -10,6 +10,7 @@ import { StatCard } from '@/components/StatCard';
 import { OutbreakMap } from '@/components/OutbreakMap';
 import { RecentReports } from '@/components/RecentReports';
 import { TrendChart } from '@/components/TrendChart';
+import { GemmaService, DashboardNarrative } from '@/services/GemmaService';
 
 const { width } = Dimensions.get('window');
 
@@ -23,6 +24,8 @@ export default function DashboardScreen() {
   
   const [refreshing, setRefreshing] = useState(false);
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
+  const [gemmaInsight, setGemmaInsight] = useState<DashboardNarrative | null>(null);
+  const [insightLoading, setInsightLoading] = useState(false);
 
   useEffect(() => {
     loadDashboardData();
@@ -33,18 +36,43 @@ export default function DashboardScreen() {
     dispatch(fetchOutbreaks());
   };
 
+  // Fetch Gemma narrative when reports or outbreaks change
+  useEffect(() => {
+    if (reports.length > 0 || outbreaks.length > 0) {
+      loadGemmaInsight();
+    }
+  }, [reports, outbreaks]);
+
+  const loadGemmaInsight = async () => {
+    setInsightLoading(true);
+    try {
+      const narrative = await GemmaService.generateDashboardNarrative(
+        reports,
+        outbreaks,
+        timeRange
+      );
+      if (narrative) {
+        setGemmaInsight(narrative);
+      }
+    } catch (e) {
+      console.log('Gemma insight unavailable:', e);
+    } finally {
+      setInsightLoading(false);
+    }
+  };
+
   const onRefresh = async () => {
     setRefreshing(true);
     await loadDashboardData();
     setRefreshing(false);
   };
 
-  // Calculate dashboard stats from Redux data
+  // Calculate dashboard stats from Redux data (with Gemma override if available)
   const dashboardData = {
-    totalReports: reports.length,
-    activeOutbreaks: outbreaks.length,
+    totalReports: gemmaInsight?.computedStats?.totalReports || reports.length,
+    activeOutbreaks: gemmaInsight?.computedStats?.activeOutbreaks || outbreaks.length,
     ashaWorkers: 23, // Mock data
-    avgResponseTime: '2.3h', // Mock data
+    avgResponseTime: gemmaInsight?.computedStats?.avgResponseTime || '2.3h',
     reportTrends: [
       { date: '2024-01-01', reports: 12 },
       { date: '2024-01-02', reports: 18 },
@@ -144,6 +172,67 @@ export default function DashboardScreen() {
           accessibility={accessibility}
         />
       </View>
+
+      {/* Gemma AI Insights */}
+      {(gemmaInsight || insightLoading) && (
+        <View style={[styles.section, { backgroundColor: theme.surface, padding: 16, borderRadius: 12 }]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+            <Ionicons name="sparkles" size={20} color={theme.primary} />
+            <Text style={[styles.sectionTitle, { color: theme.text, marginBottom: 0, marginLeft: 8 }]}>
+              AI Insights
+            </Text>
+          </View>
+          
+          {insightLoading && !gemmaInsight ? (
+            <Text style={{ color: theme.textSecondary, fontStyle: 'italic' }}>
+              Analyzing health data with Gemma AI...
+            </Text>
+          ) : gemmaInsight ? (
+            <View>
+              <Text style={{ color: theme.text, fontSize: 14, lineHeight: 20, marginBottom: 8 }}>
+                {gemmaInsight.trendAnalysis}
+              </Text>
+              <Text style={{ color: theme.warning, fontSize: 13, lineHeight: 18, marginBottom: 12 }}>
+                ⚠ {gemmaInsight.riskAssessment}
+              </Text>
+              
+              {gemmaInsight.keyFindings?.length > 0 && (
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ color: theme.text, fontWeight: '600', fontSize: 14, marginBottom: 6 }}>
+                    Key Findings:
+                  </Text>
+                  {gemmaInsight.keyFindings.slice(0, 3).map((finding, idx) => (
+                    <Text key={idx} style={{ color: theme.textSecondary, fontSize: 13, lineHeight: 18, marginBottom: 4 }}>
+                      • {finding}
+                    </Text>
+                  ))}
+                </View>
+              )}
+              
+              {gemmaInsight.actionItems?.length > 0 && (
+                <View>
+                  <Text style={{ color: theme.text, fontWeight: '600', fontSize: 14, marginBottom: 6 }}>
+                    Recommended Actions:
+                  </Text>
+                  {gemmaInsight.actionItems.slice(0, 3).map((action, idx) => (
+                    <Text key={idx} style={{ color: theme.primary, fontSize: 13, lineHeight: 18, marginBottom: 4 }}>
+                      {idx + 1}. {action}
+                    </Text>
+                  ))}
+                </View>
+              )}
+              
+              {gemmaInsight.predictiveInsights?.seasonalWarning ? (
+                <View style={{ marginTop: 12, padding: 10, backgroundColor: theme.background, borderRadius: 8 }}>
+                  <Text style={{ color: theme.warning, fontSize: 12, fontWeight: '600' }}>
+                    🌧 {gemmaInsight.predictiveInsights.seasonalWarning}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+          ) : null}
+        </View>
+      )}
 
       {/* Outbreak Map */}
       <View style={styles.section}>

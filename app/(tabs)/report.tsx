@@ -91,10 +91,37 @@ export default function ReportScreen() {
     };
 
     try {
-      await dispatch(submitHealthReport(reportData)).unwrap();
+      const result = await dispatch(submitHealthReport(reportData)).unwrap();
+      
+      // Build message with Gemma AI analysis if available
+      let message = t('report.reportSubmittedMessage');
+      
+      if (result.aiAnalysis) {
+        const ai = result.aiAnalysis;
+        message = `AI Severity: ${ai.suggestedSeverity.toUpperCase()}`;
+        
+        if (ai.possibleConditions?.length > 0) {
+          const top = ai.possibleConditions[0];
+          message += `\n\nLikely condition: ${top.condition} (${top.likelihood})`;
+          message += `\n${top.reasoning}`;
+        }
+        
+        if (ai.recommendations?.length > 0) {
+          message += `\n\n📋 Top recommendation:\n${ai.recommendations[0]}`;
+        }
+        
+        if (ai.referralNeeded) {
+          message += `\n\n🏥 Referral: ${ai.referralType}`;
+        }
+        
+        if (ai.followUpTimeframe) {
+          message += `\n⏰ Follow-up: ${ai.followUpTimeframe}`;
+        }
+      }
+
       Alert.alert(
-        t('report.reportSubmitted'),
-        t('report.reportSubmittedMessage'),
+        result.aiAnalysis ? '✅ Report Submitted — AI Analysis' : t('report.reportSubmitted'),
+        message,
         [
           {
             text: t('common.ok'),

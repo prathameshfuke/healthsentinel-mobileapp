@@ -243,6 +243,7 @@ export default function WaterQualityScreen() {
       return;
     }
 
+    // Local fallback assessment (Gemma will override in the thunk if available)
     const overallQuality = calculateOverallQuality();
     const riskLevel = overallQuality === 'poor' ? 'high' : 
                      overallQuality === 'fair' ? 'medium' : 'low';
@@ -255,18 +256,35 @@ export default function WaterQualityScreen() {
       assessment: {
         overallQuality,
         riskLevel,
-        issues: [],
-        recommendations: [],
+        issues: [] as string[],
+        recommendations: [] as string[],
       },
       status: 'submitted' as const,
       tags: ['water_quality_monitoring'],
     };
 
     try {
-      await dispatch(submitWaterQualityReading(reportData)).unwrap();
+      const result = await dispatch(submitWaterQualityReading(reportData)).unwrap();
+
+      // Build a meaningful success message from Gemma analysis
+      const quality = result.assessment?.overallQuality?.toUpperCase() || overallQuality.toUpperCase();
+      const issueCount = result.assessment?.issues?.length || 0;
+      const recCount = result.assessment?.recommendations?.length || 0;
+      
+      let message = `Water quality assessed as: ${quality}`;
+      if (issueCount > 0) {
+        message += `\n\n⚠ ${issueCount} issue(s) found`;
+      }
+      if (recCount > 0) {
+        message += `\n${recCount} recommendation(s) provided`;
+      }
+      if (result.riskPrediction) {
+        message += `\n\nOutbreak risk: ${Math.round(result.riskPrediction.outbreakRisk * 100)}%`;
+      }
+
       Alert.alert(
-        'Report Submitted',
-        'Water quality report has been submitted successfully',
+        'Report Submitted — AI Analysis Complete',
+        message,
         [
           {
             text: 'OK',

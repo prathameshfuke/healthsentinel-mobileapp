@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { GemmaService } from '@/services/GemmaService';
 
 export interface WaterQualityReading {
   id: string;
@@ -155,14 +156,29 @@ export const submitWaterQualityReading = createAsyncThunk(
   'waterQuality/submitReading',
   async (reading: Omit<WaterQualityReading, 'id' | 'createdAt' | 'updatedAt'>, { rejectWithValue }) => {
     try {
-      // Mock submission - replace with actual Firebase call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Send to Gemma for AI-powered water quality analysis
+      const gemmaAnalysis = await GemmaService.analyzeWaterQuality(
+        reading.parameters as Record<string, number>,
+        reading.sourceInfo?.type || 'other',
+        reading.location?.village || reading.location?.address || 'Unknown'
+      );
+
       const newReading: WaterQualityReading = {
         ...reading,
         id: Date.now().toString(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        // Use Gemma analysis if available, otherwise keep what was passed in
+        ...(gemmaAnalysis && {
+          assessment: {
+            overallQuality: gemmaAnalysis.overallQuality,
+            riskLevel: gemmaAnalysis.riskLevel as any,
+            issues: gemmaAnalysis.issues,
+            recommendations: gemmaAnalysis.recommendations,
+          },
+          anomalyScore: gemmaAnalysis.anomalyScore,
+          riskPrediction: gemmaAnalysis.riskPrediction,
+        }),
       };
       
       return newReading;

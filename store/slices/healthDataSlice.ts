@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { GemmaService } from '@/services/GemmaService';
 // Temporarily disabled Firebase import
 // import firestore from '@react-native-firebase/firestore';
 
@@ -32,6 +33,21 @@ export interface HealthReport {
   reviewedBy?: string;
   notes?: string;
   followUpRequired: boolean;
+  // Gemma AI analysis (populated when server is available)
+  aiAnalysis?: {
+    suggestedSeverity: string;
+    possibleConditions: Array<{
+      condition: string;
+      likelihood: string;
+      reasoning: string;
+    }>;
+    recommendations: string[];
+    followUpTimeframe: string;
+    referralNeeded: boolean;
+    referralType: string;
+    alertTrigger: boolean;
+    alertReason: string;
+  };
 }
 
 export interface OutbreakData {
@@ -175,14 +191,39 @@ export const submitHealthReport = createAsyncThunk(
   'healthData/submitHealthReport',
   async (report: Omit<HealthReport, 'id' | 'createdAt' | 'updatedAt'>, { rejectWithValue }) => {
     try {
-      // Mock submission
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Send to Gemma for AI analysis (non-blocking fallback)
+      const gemmaAnalysis = await GemmaService.analyzeSymptoms(
+        report.symptoms,
+        report.severity,
+        report.notes || '',
+        report.reporterName,
+        report.reporterRole,
+        report.location.village || report.location.address
+      );
+
       const newReport: HealthReport = {
         ...report,
         id: Date.now().toString(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        // Attach AI analysis if available
+        ...(gemmaAnalysis && {
+          aiAnalysis: {
+            suggestedSeverity: gemmaAnalysis.suggestedSeverity,
+            possibleConditions: gemmaAnalysis.possibleConditions,
+            recommendations: gemmaAnalysis.recommendations,
+            followUpTimeframe: gemmaAnalysis.followUpTimeframe,
+            referralNeeded: gemmaAnalysis.referralNeeded,
+            referralType: gemmaAnalysis.referralType,
+            alertTrigger: gemmaAnalysis.alertTrigger,
+            alertReason: gemmaAnalysis.alertReason,
+          },
+          // Override severity if Gemma suggests escalation
+          severity: gemmaAnalysis.suggestedSeverity === 'critical'
+            ? 'critical'
+            : report.severity,
+          followUpRequired: gemmaAnalysis.followUpRequired || report.followUpRequired,
+        }),
       };
       
       return newReport;
