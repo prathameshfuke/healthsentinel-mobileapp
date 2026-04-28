@@ -1,6 +1,6 @@
-# 🏥 Health Sentinel Mobile App
+# Health Sentinel Mobile Application
 
-A comprehensive React Native + Expo cross-platform mobile application for rural healthcare monitoring, serving three distinct user types: Health Officials, ASHA Workers, and Community Members.
+Health Sentinel is a robust, cross-platform mobile solution developed using React Native and Expo, designed to facilitate comprehensive healthcare monitoring in rural environments. The platform provides tailored interfaces and functionalities for three primary user categories: Health Officials, ASHA (Accredited Social Health Activist) Workers, and Community Members.
 
 ![Health Sentinel](https://img.shields.io/badge/Health-Sentinel-blue?style=for-the-badge)
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -8,213 +8,126 @@ A comprehensive React Native + Expo cross-platform mobile application for rural 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)
 
-## 🌟 Features
+## Core Functionalities
 
-### 👨‍⚕️ Health Officials
-- **Real-time Dashboard**: Live analytics with custom KPIs
-- **Outbreak Management**: Advanced outbreak visualization and tracking
-- **Resource Allocation**: Intelligent ASHA worker management
-- **Compliance Monitoring**: Automated reporting and audits
-- **Predictive Analytics**: AI-powered outbreak prediction
+### Health Administration and Oversight
+*   **Real-time Analytics Dashboard**: Comprehensive data visualization with custom Key Performance Indicators (KPIs).
+*   **Outbreak Surveillance**: Advanced tracking and spatial visualization of disease outbreaks.
+*   **Resource Management**: Automated tools for ASHA worker coordination and resource allocation.
+*   **Regulatory Compliance**: Automated generation of audit trails and compliance reports.
+*   **Predictive Modeling**: Integration of AI-driven analytics for proactive outbreak identification.
 
-### 👩‍⚕️ ASHA Workers
-- **Field Data Collection**: Offline-first data collection with automatic sync
-- **Smart Data Entry**: Voice-to-text in local languages
-- **Route Optimization**: Intelligent visit planning
-- **Performance Analytics**: Personal productivity insights
-- **GPS Tracking**: Field visit verification
+### Field Operations (ASHA Workers)
+*   **Synchronized Offline Operations**: Robust data collection capabilities in low-connectivity areas with automated synchronization.
+*   **Intelligent Data Entry**: Multi-lingual voice-to-text integration for efficient reporting.
+*   **Logistical Optimization**: Algorithmic route planning for optimized field visits.
+*   **Productivity Metrics**: Granular insights into field performance and impact.
+*   **Verification Systems**: GPS-based verification for field visit validation.
 
-### 👥 Community Members
-- **Health Reporting**: Easy symptom reporting with voice input
-- **Family Health Tracking**: Advanced health monitoring for family members
-- **Emergency Response**: One-tap emergency services
-- **Health Education**: Interactive content in local languages
-- **Privacy Controls**: Granular data sharing options
+### Community Engagement
+*   **Symptom Reporting Interface**: Simplified health reporting mechanisms with multi-modal input support.
+*   **Longitudinal Health Tracking**: Tools for monitoring family health history and trends.
+*   **Emergency Integration**: Direct access to localized emergency services.
+*   **Educational Resources**: Distribution of health education content in regional dialects.
+*   **Data Sovereignty**: Sophisticated privacy controls and granular data sharing permissions.
 
-## 🚀 Tech Stack
+## Technical Architecture
 
-- **Frontend**: React Native 0.81.4 + Expo SDK 54
-- **State Management**: Redux Toolkit + RTK Query
-- **Navigation**: Expo Router v6
-- **Database**: Firebase Firestore (planned)
-- **Authentication**: Firebase Auth (planned)
-- **Storage**: Firebase Storage (planned)
-- **Push Notifications**: Firebase Cloud Messaging (planned)
-- **Offline Support**: Redux Persist + AsyncStorage
-- **Languages**: TypeScript
-- **Styling**: StyleSheet with dynamic theming
+*   **Framework**: React Native 0.81.4 utilizing Expo SDK 54.
+*   **State Management**: Redux Toolkit with RTK Query for efficient data fetching and caching.
+*   **Navigation**: File-based routing via Expo Router v6.
+*   **Persistence**: Offline-first architecture supported by Redux Persist and AsyncStorage.
+*   **Development Language**: TypeScript for enhanced type safety and maintainability.
+*   **Design System**: Dynamic theming engine built on React Native StyleSheet.
 
-## 📱 Screenshots
+### Planned Integrations
+*   **Identity Management**: Firebase Authentication.
+*   **Database**: Firebase Firestore for real-time synchronization.
+*   **Storage Services**: Firebase Cloud Storage.
+*   **Notification Engine**: Firebase Cloud Messaging (FCM).
 
-*Screenshots will be added once the app is fully functional*
+## Implementation Details
 
-## 🛠️ Installation & Setup
-
-### Prerequisites
-- Node.js 18+ and npm/yarn
-- Expo CLI (`npm install -g @expo/cli`)
-- iOS Simulator (for iOS development)
-- Android Studio/Emulator (for Android development)
-
-### Quick Start
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/prathameshfuke/healthsentinel-mobileapp.git
-cd healthsentinel-mobileapp
-```
-
-2. **Install dependencies**
-```bash
-npm install
-```
-
-3. **Start the development server**
-```bash
-npm run dev
-```
-
-4. **Run on your preferred platform**
-```bash
-# iOS Simulator
-npm run ios
-
-# Android Emulator
-npm run android
-
-# Web Browser
-npm run web
-```
-
-## 🎯 Demo Users
-
-The app includes demo users for testing different roles:
-
-| Role | Name | Phone | OTP |
-|------|------|-------|-----|
-| Health Official | Dr. Rajesh Kumar | +911234567890 | 123456 |
-| ASHA Worker | Priya Devi | +919876543210 | 123456 |
-| Community Member | Ram Singh | +918765432109 | 123456 |
-
-## 🏗️ Project Structure
-
-```
+### Directory Structure
+```text
 healthsentinel-mobileapp/
-├── app/                    # Expo Router app directory
-│   ├── (tabs)/            # Tab-based navigation
-│   │   ├── index.tsx      # Home screen
-│   │   ├── dashboard.tsx  # Health officials dashboard
-│   │   ├── report.tsx     # Health reporting
-│   │   ├── alerts.tsx     # Health alerts
-│   │   ├── fielddata.tsx  # ASHA worker field data
-│   │   └── settings.tsx   # App settings
-│   ├── auth/              # Authentication screens
-│   └── _layout.tsx        # Root layout
-├── components/            # Reusable UI components
-├── context/               # React Context providers
-├── store/                 # Redux store and slices
-│   ├── slices/           # Redux slices
-│   └── hooks.ts          # Redux hooks
-├── services/             # API and Firebase services
-├── hooks/                # Custom React hooks
-└── config/               # Configuration files
+├── app/                    # File-based routing (Expo Router)
+│   ├── (tabs)/            # Main navigation modules
+│   ├── auth/              # Authentication workflows
+│   └── _layout.tsx        # Root configuration and providers
+├── components/            # Atomic and molecular UI components
+├── context/               # Global state providers
+├── store/                 # Centralized state management (Redux)
+│   ├── slices/           # Feature-specific state logic
+│   └── hooks.ts          # Typed state hooks
+├── services/             # External API and infrastructure integrations
+├── hooks/                # Custom React composition logic
+└── config/               # Environment and application constants
 ```
 
-## 🔧 Key Features Implemented
+## Deployment and Setup
 
-### ✅ Phase 1: Foundation
-- [x] Expo SDK 54 (latest)
-- [x] Redux Toolkit with RTK Query
-- [x] Role-based navigation and authentication
-- [x] Multi-language support (English, Hindi, Assamese, Bengali)
-- [x] Accessibility features (large text, high contrast, voice navigation)
-- [x] Dark/Light theme support
-- [x] Offline-first architecture with Redux Persist
+### System Requirements
+*   Node.js (Version 18 or higher)
+*   Package Manager (npm or yarn)
+*   Expo CLI (`npm install -g @expo/cli`)
+*   Platform-specific Emulators (Android Studio or Xcode)
 
-### 🚧 Phase 2: Advanced Features (In Progress)
-- [ ] Firebase Authentication integration
-- [ ] Real-time Firestore database
-- [ ] Push notifications with FCM
-- [ ] Advanced offline sync
-- [ ] Voice recognition and ML Kit integration
-- [ ] Geofencing alerts
+### Installation Sequence
 
-### 📋 Phase 3: AI & Analytics (Planned)
-- [ ] TensorFlow Lite models for symptom analysis
-- [ ] Predictive analytics for outbreak detection
-- [ ] Advanced dashboard with real-time insights
-- [ ] Performance monitoring and A/B testing
+1.  **Repository Acquisition**
+    ```bash
+    git clone https://github.com/prathameshfuke/healthsentinel-mobileapp.git
+    cd healthsentinel-mobileapp
+    ```
 
-## 🌐 Internationalization
+2.  **Dependency Resolution**
+    ```bash
+    npm install
+    ```
 
-The app supports multiple languages:
-- **English** (en) - Default
-- **Hindi** (hi) - हिंदी
-- **Assamese** (as) - অসমীয়া
-- **Bengali** (bn) - বাংলা
+3.  **Development Execution**
+    ```bash
+    # Initialize development server
+    npm run dev
 
-Language can be changed from the Settings screen.
+    # Platform-specific builds
+    npm run ios      # iOS Environment
+    npm run android  # Android Environment
+    npm run web      # Web Target
+    ```
 
-## ♿ Accessibility
+## Development Roadmap
 
-Health Sentinel is built with accessibility in mind:
-- **Large Text**: Scalable font sizes
-- **High Contrast**: Enhanced color contrast
-- **Voice Navigation**: Text-to-speech support
-- **Screen Reader**: Compatible with screen readers
-- **Gesture Navigation**: Alternative navigation methods
+### Completed Milestones
+*   Architecture initialization with Expo SDK 54.
+*   State management implementation via Redux Toolkit.
+*   Role-based navigation and authentication logic.
+*   Internationalization framework (English, Hindi, Assamese, Bengali).
+*   Accessibility standard implementation (WCAG compliant).
+*   Dynamic theme support (Dark/Light modes).
 
-## 🔒 Security & Privacy
+### Near-term Objectives (Phase 2)
+*   Full Firebase infrastructure integration.
+*   Implementation of real-time data synchronization.
+*   Cloud-based push notification systems.
+*   Advanced NLP for voice-driven reporting.
 
-- Role-based access control
-- Data encryption for sensitive health information
-- Privacy-first design with granular permissions
-- HIPAA compliance considerations
-- Secure authentication with Firebase
+### Strategic Objectives (Phase 3)
+*   Edge computing with TensorFlow Lite for localized symptom analysis.
+*   Deployment of predictive outbreak models.
+*   IoT integration for remote health monitoring.
 
-## 📊 Performance
+## Quality Assurance and Standards
 
-- **App startup time**: < 3 seconds
-- **Offline sync success rate**: > 95%
-- **Crash-free sessions**: > 99%
-- **Battery optimization**: Minimal background usage
+*   **Accessibility**: High-contrast support, screen reader compatibility, and scalable typography.
+*   **Privacy**: HIPAA-aligned data handling and role-based access control.
+*   **Performance Metrics**: Optimized for low latency (<3s startup) and high reliability (>95% sync rate).
 
-## 🤝 Contributing
+## Licensing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+This project is distributed under the MIT License. Refer to the `LICENSE` file for detailed legal information.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## Technical Support
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Expo Team** for the amazing development platform
-- **React Native Community** for the robust ecosystem
-- **Firebase Team** for backend services
-- **ASHA Workers** and **Health Officials** for their invaluable feedback
-
-## 📞 Support
-
-For support, email support@healthsentinel.com or create an issue in this repository.
-
-## 🗺️ Roadmap
-
-- **Q1 2025**: Firebase integration and real-time features
-- **Q2 2025**: AI/ML integration for symptom analysis
-- **Q3 2025**: Advanced analytics and reporting
-- **Q4 2025**: IoT device integration and expansion
-
----
-
-**Made with ❤️ for rural healthcare by the Health Sentinel Team**
-
-[![GitHub stars](https://img.shields.io/github/stars/prathameshfuke/healthsentinel-mobileapp?style=social)](https://github.com/prathameshfuke/healthsentinel-mobileapp/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/prathameshfuke/healthsentinel-mobileapp?style=social)](https://github.com/prathameshfuke/healthsentinel-mobileapp/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/prathameshfuke/healthsentinel-mobileapp)](https://github.com/prathameshfuke/healthsentinel-mobileapp/issues)
+For technical inquiries or issue reporting, please utilize the GitHub Issue tracker or contact the maintenance team at support@healthsentinel.com.
